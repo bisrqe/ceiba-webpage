@@ -3,13 +3,12 @@ import { founders } from "../data/team";
 export default function Founders() {
   return (
     <div className="section">
-      <span className="tag-pill">Quiénes somos</span>
-      <h1 className="mt-4 font-serif text-4xl font-semibold md:text-5xl">Founders</h1>
+      <span className="tag-pill">Conócenos</span>
+      <h1 className="mt-4 font-serif text-4xl font-semibold md:text-5xl">Las personas detrás de CEIBA</h1>
       <p className="mt-4 max-w-2xl text-ceiba-ink/70">
-        CEIBA fue fundada por dos universitarios convencidos de que la
-        próxima generación de tomadores de decisión climática ya está en las
-        aulas — solo necesita las herramientas, la red y el espacio para
-        actuar.
+        CEIBA nació de dos universitarios convencidos de que la próxima
+        generación de tomadores de decisión climática ya está en las aulas —
+        solo necesita las herramientas, la red y el espacio para actuar.
       </p>
 
       <div className="mt-14 grid gap-10 md:grid-cols-2">
@@ -19,10 +18,10 @@ export default function Founders() {
               <img
                 src={f.photo}
                 alt={f.name}
-                className="h-40 w-40 rounded-2xl object-cover"
+                className="h-48 w-48 rounded-2xl object-cover"
               />
             ) : (
-              <div className="flex h-40 w-40 items-center justify-center rounded-2xl bg-ceiba-pink font-serif text-4xl font-semibold text-white">
+              <div className="flex h-48 w-48 items-center justify-center rounded-2xl bg-ceiba-pink font-serif text-4xl font-semibold text-white">
                 {f.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
               </div>
             )}

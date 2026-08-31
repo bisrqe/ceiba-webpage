@@ -90,30 +90,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Founders teaser */}
+      {/* Equipo teaser */}
       <section className="section border-t border-ceiba-ink/10">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <h2 className="text-3xl font-semibold">Quiénes somos</h2>
+            <h2 className="text-3xl font-semibold">Conócenos</h2>
             <p className="mt-3 max-w-md text-ceiba-ink/70">
               CEIBA nace de la convicción de que las y los jóvenes universitarios
               pueden —y deben— ser parte de la gobernanza climática.
             </p>
           </div>
-          <Link to="/founders" className="btn-secondary">Conoce al equipo</Link>
+          <Link to="/founders" className="btn-secondary">Conócenos</Link>
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {founders.map((f) => (
-            <div key={f.id} className="flex items-center gap-4 rounded-2xl border border-ceiba-ink/10 p-5">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-ceiba-pink font-serif text-xl font-semibold text-white">
-                {f.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
-              </div>
+            <Link
+              key={f.id}
+              to="/founders"
+              className="flex items-center gap-4 rounded-2xl border border-ceiba-ink/10 p-5 transition hover:shadow-lg"
+            >
+              {f.photo ? (
+                <img
+                  src={f.photo}
+                  alt={f.name}
+                  className="h-16 w-16 shrink-0 rounded-full object-cover"
+                />
+              ) : (
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-ceiba-pink font-serif text-xl font-semibold text-white">
+                  {f.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+                </div>
+              )}
               <div>
                 <p className="font-semibold">{f.name}</p>
                 <p className="text-sm text-ceiba-ink/60">{f.role}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
