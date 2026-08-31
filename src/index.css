@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-ceiba-cream text-ceiba-ink font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-ceiba-pink px-6 py-3 font-sans font-semibold text-white shadow-sm transition hover:bg-ceiba-ink;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border-2 border-ceiba-ink px-6 py-3 font-sans font-semibold text-ceiba-ink transition hover:bg-ceiba-ink hover:text-white;
+  }
+  .tag-pill {
+    @apply inline-block rounded-md bg-ceiba-mint px-4 py-1.5 text-sm font-medium text-ceiba-ink;
+  }
+  .section {
+    @apply mx-auto max-w-6xl px-6 py-16 md:py-24;
+  }
+}
