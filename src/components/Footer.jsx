@@ -35,7 +35,7 @@ export default function Footer() {
             <li>hola@ceiba.org.mx</li>
             <li className="flex gap-3 pt-1">
               <a href="#" className="hover:text-ceiba-pink" aria-label="Instagram de CEIBA">Instagram</a>
-              <a href="#" className="hover:text-ceiba-pink" aria-label="LinkedIn de CEIBA">LinkedIn</a>
+              <a href="https://www.linkedin.com/company/ceibaorg" target="_blank" rel="noopener noreferrer" className="hover:text-ceiba-pink" aria-label="LinkedIn de CEIBA">LinkedIn</a>
             </li>
           </ul>
         </div>
