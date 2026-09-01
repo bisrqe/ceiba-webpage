@@ -46,6 +46,32 @@ export default function Initiatives() {
                   <p className="mt-2 text-sm text-ceiba-ink/70">{p.detail.ejemplo}</p>
                 </div>
               </div>
+
+              {p.metrics && (
+                <details className="group mt-6 border-t border-ceiba-ink/10 pt-6">
+                  <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-ceiba-pink">
+                    <span>Ver métricas y planeación</span>
+                    <span className="transition group-open:rotate-180">↓</span>
+                  </summary>
+                  <div className="mt-5 grid gap-6 sm:grid-cols-2">
+                    {p.metrics.blocks.map((block) => (
+                      <div key={block.heading} className="rounded-xl bg-ceiba-cream p-5">
+                        <h4 className="font-serif text-base font-semibold text-ceiba-ink">
+                          {block.heading}
+                        </h4>
+                        <ul className="mt-2 space-y-1.5 text-sm text-ceiba-ink/70">
+                          {block.items.map((item) => (
+                            <li key={item} className="flex gap-2">
+                              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-ceiba-pink" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              )}
             </div>
           </article>
         ))}
