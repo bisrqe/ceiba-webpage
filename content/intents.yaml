@@ -1,0 +1,94 @@
+# =============================================================================
+# content/intents.yaml · INTENCIONES (qué quiere lograr la persona con su mensaje)
+# -----------------------------------------------------------------------------
+# Nivel medio de la arquitectura (NLU). El clasificador compara el mensaje con:
+#   keywords → palabras o frases que, si aparecen, señalan con fuerza esta intención.
+#   examples → frases de ejemplo (entre más variadas, mejor entiende el bot).
+#
+# Ejemplo: "¿cuándo es la próxima COP?" → intención `ver_calendario`.
+#
+# MEJORAR LA COMPRENSIÓN: cuando el bot no entienda algo, revisa el registro
+#   (data/unmatched.log) y agrega esa frase en `examples` de la intención correcta.
+# AGREGAR UNA INTENCIÓN NUEVA: requiere también una función en
+#   backend/app/fulfillment/handlers.py (ver docs/04_FLUJOS_CONVERSACIONALES.md).
+# Escribe en minúsculas; acentos y mayúsculas se ignoran al comparar.
+# =============================================================================
+
+intents:
+  saludo:
+    keywords: ["hola", "buenas", "buen dia", "buenos dias", "buenas tardes", "buenas noches", "que tal", "hey", "start", "/start", "empezar", "inicio"]
+    examples: ["hola ceiba", "buenas tardes", "hola, quiero informacion"]
+
+  menu:
+    keywords: ["menu", "opciones", "volver", "regresar", "inicio del menu", "ver opciones"]
+    examples: ["muestrame el menu", "que puedo hacer", "que opciones tengo"]
+
+  despedida:
+    keywords: ["adios", "bye", "hasta luego", "nos vemos", "chao", "eso es todo"]
+    examples: ["ya me voy", "hasta pronto"]
+
+  agradecimiento:
+    keywords: ["gracias", "muchas gracias", "te agradezco", "mil gracias"]
+    examples: ["gracias por la ayuda"]
+
+  que_es_ceiba:
+    keywords: ["que es ceiba", "quienes son", "quienes somos", "mision", "vision", "objetivo de ceiba", "que hace ceiba", "significa ceiba"]
+    examples: ["de que trata ceiba", "cuentame sobre ceiba", "que significan las siglas"]
+
+  evaluar_perfil:
+    keywords: ["evaluar mi perfil", "evaluar perfil", "mi perfil", "diagnostico", "test", "que nivel soy", "mi nivel", "recomiendame", "por donde empiezo"]
+    examples: ["quiero hacer el diagnostico", "que programa me conviene", "no se por donde empezar"]
+
+  ver_programas:
+    keywords: ["programas", "programa", "capacitaciones", "cursos", "que ofrecen"]
+    examples: ["que programas tienen", "en que puedo participar"]
+
+  biblioteca:
+    keywords: ["biblioteca", "bibliografia", "lecturas", "documentos", "literatura", "recursos", "que leo", "que puedo leer"]
+    examples: ["recomiendame una lectura", "donde leo sobre el acuerdo de paris", "tienes documentos oficiales"]
+
+  pregunta_climatica:
+    # Preguntas de contenido sobre cambio climático → se responden con la biblioteca (RAG).
+    keywords: ["acuerdo de paris", "protocolo de kioto", "kyoto", "cmnucc", "unfccc", "ipcc", "ndc", "contribuciones determinadas", "1.5", "cop28", "cop29", "cop30", "cop31", "sb62", "sb64", "balance mundial", "mitigacion", "adaptacion", "perdidas y danos", "financiamiento climatico", "ar7", "sbsta", "sbi"]
+    examples: ["que dice el acuerdo de paris", "que paso en la cop29", "que es una ndc", "como funcionan las negociaciones"]
+
+  ver_iniciativas:
+    keywords: ["iniciativas", "tipos de iniciativa", "sector publico", "sector privado", "publico privado", "pymes", "startup", "financiamiento verde"]
+    examples: ["que tipo de iniciativa puedo hacer", "ejemplos de iniciativas"]
+
+  ver_calendario:
+    keywords: ["calendario", "fechas", "cuando", "cuándo", "proxima", "semana tec cuando", "periodo"]
+    examples: ["cuando empieza el programa", "cuando es la semana tec", "que fechas tienen"]
+
+  faq_menu:
+    keywords: ["preguntas frecuentes", "faq", "dudas", "convocatoria", "requisitos", "bases"]
+    examples: ["tengo una duda de la convocatoria", "cuales son las reglas"]
+
+  mi_progreso:
+    keywords: ["mi progreso", "progreso", "mis lecturas", "mi avance", "donde me quede"]
+    examples: ["que me falta", "como voy"]
+
+  inscripcion:
+    keywords: ["inscribirme", "inscribo", "me inscribo", "inscripcion", "registrarme", "registro", "participar", "unirme", "postularme", "aplicar"]
+    examples: ["como me inscribo", "quiero entrar a ceiba", "donde me registro"]
+
+  contacto_humano:
+    keywords: ["hablar con alguien", "una persona", "humano", "asesor", "secretario", "secretaria", "contacto", "telefono", "correo", "whatsapp de ceiba"]
+    examples: ["quiero hablar con una persona", "me pasas con alguien", "a quien le escribo"]
+
+  definir_termino:
+    # Se activa con "qué es X" / "qué significa X" cuando X está en glossary.yaml.
+    keywords: ["que es", "que significa", "definicion de", "a que se refiere"]
+    examples: ["que significa incidencia", "que es gobernanza climatica"]
+
+  borrar_datos:
+    keywords: ["borrar mis datos", "eliminar mis datos", "olvidame", "borra mi informacion", "darme de baja"]
+    examples: ["quiero que borres mi informacion"]
+
+  retomar:
+    # Código de continuidad para cambiar de dispositivo, p. ej. "CEIBA-7K3P".
+    keywords: ["retomar", "continuar con codigo", "tengo un codigo"]
+    examples: ["retomar ceiba-ab12"]
+
+# Umbral de confianza (0 a 1). Más alto = el bot pide aclaración más seguido.
+threshold: 0.45

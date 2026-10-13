@@ -1,0 +1,134 @@
+# =============================================================================
+# content/faq.yaml · BANCO DE PREGUNTAS FRECUENTES (nivel 1 de atención)
+# -----------------------------------------------------------------------------
+# Respuestas predeterminadas: el bot las entrega TAL CUAL, sin modelo de lenguaje.
+# Así garantizamos que montos, fechas y reglas sean exactos.
+#
+# Cada pregunta tiene:
+#   id        → único, sin espacios.
+#   category  → convocatoria | programas | conceptos | proceso
+#   question  → la pregunta como aparece en el menú.
+#   variants  → otras formas en que la gente la escribe (mejoran la detección).
+#   answer    → la respuesta. `null` = pendiente: el bot avisa que aún no se publica.
+#   status    → done (confirmado) | pending (falta dato) | prop (propuesta por validar)
+#   source    → de dónde sale la respuesta (documento, acta, convocatoria). Obligatorio
+#               cuando status = done, para poder auditar.
+#
+# ⚠️ Las preguntas de la CONVOCATORIA están en `null` porque los datos no se han
+#    entregado. Llénalas con el texto EXACTO de la convocatoria vigente.
+# =============================================================================
+
+faqs:
+  # ---------------------------------------------------------------- Convocatoria
+  - id: monto
+    category: convocatoria
+    question: "¿Cuál es el monto del apoyo?"
+    variants: ["cuanto dinero dan", "monto", "cuanto es el apoyo", "cuanto financian", "presupuesto maximo"]
+    answer: null          # EDITA AQUÍ con el monto exacto y la moneda (ej. "Hasta $X MXN por iniciativa…")
+    status: pending
+    source: null          # EDITA AQUÍ (ej. "Convocatoria 2026-2027, sección 4")
+
+  - id: fechas_convocatoria
+    category: convocatoria
+    question: "¿Cuáles son las fechas de la convocatoria?"
+    variants: ["fecha limite", "cuando cierra", "hasta cuando puedo aplicar", "fechas de registro", "cuando abre la convocatoria"]
+    answer: null          # EDITA AQUÍ con apertura, cierre y publicación de resultados
+    status: pending
+    source: null
+
+  - id: rubros_no_financiables
+    category: convocatoria
+    question: "¿Qué rubros NO se financian?"
+    variants: ["que no cubre", "rubros no financiables", "en que no puedo gastar", "gastos no permitidos", "que no se paga"]
+    answer: null          # EDITA AQUÍ con la lista exacta de la convocatoria
+    status: pending
+    source: null
+
+  - id: empujon_verde
+    category: convocatoria
+    question: "¿Qué es un empujón verde?"
+    variants: ["empujon verde", "que es el empujon", "empujoncito verde"]
+    answer: null          # EDITA AQUÍ con la definición oficial
+    status: pending
+    source: null
+
+  - id: formulario_pide
+    category: convocatoria
+    question: "¿Qué me pide el formulario?"
+    variants: ["que datos pide el formulario", "que necesito para inscribirme", "requisitos del formulario", "que documentos necesito"]
+    answer: >
+      El formulario del sitio pide: nombre, correo, edad, rol, escuela y semestre;
+      los programas que te interesan y tu nivel; una descripción breve de tu idea
+      (opcional, hasta 160 caracteres) y tu consentimiento de privacidad. Si eres
+      menor de 18 años, también se necesita el nombre, correo y consentimiento de tu
+      madre, padre o tutor.
+    status: done
+    source: "Sitio web CEIBA, sección Participa (formulario de inscripción)"
+
+  - id: quien_puede
+    category: convocatoria
+    question: "¿Quién puede participar?"
+    variants: ["requisitos para participar", "puedo participar", "es solo para el tec", "quien puede entrar"]
+    answer: >
+      Depende del programa. **Eventos internacionales:** estudiantes universitarios
+      con asistencia confirmada a un evento de la CMNUCC. **Semana Tec:** estudiantes
+      del Tec inscritos en la Semana Tec «Emergencia Climática», de cualquier carrera.
+      **Programa Anual:** estudiantes universitarios interesados en política pública o
+      activismo climático.
+    status: done
+    source: "Documento base CEIBA, sección Público objetivo"
+
+  # ---------------------------------------------------------------- Programas
+  - id: duracion_anual
+    category: programas
+    question: "¿Cuánto dura el Programa Anual?"
+    variants: ["duracion del programa anual", "cuanto tiempo dura", "cuantos meses"]
+    answer: >
+      Un ciclo completo de agosto a julio, en dos periodos: **agosto a diciembre**
+      (investigación y diseño de iniciativas) y **enero a julio** (implementación e
+      impacto).
+    status: done
+    source: "Documento base CEIBA, Calendario anual completo"
+
+  - id: niveles
+    category: programas
+    question: "¿Cómo sé mi nivel?"
+    variants: ["que niveles hay", "basico intermedio avanzado", "en que nivel estoy"]
+    answer: >
+      Hay tres niveles: **Básico** (estás empezando), **Intermedio** (dominas los
+      conceptos y necesitas apoyo para diseñar) y **Avanzado** (ya tienes una
+      iniciativa en diseño o implementación). Toca «📝 Evaluar mi perfil» y te
+      sugiero uno en cuatro preguntas.
+    status: done
+    source: "Documento base CEIBA, Perfiles de participantes"
+
+  - id: costo
+    category: programas
+    question: "¿Tiene costo participar?"
+    variants: ["cuesta", "es gratis", "hay que pagar", "precio"]
+    answer: null          # EDITA AQUÍ (no está en el documento base; no lo asumimos)
+    status: pending
+    source: null
+
+  # ---------------------------------------------------------------- Conceptos
+  - id: incidencia
+    category: conceptos
+    question: "¿Qué es hacer incidencia?"
+    variants: ["que es incidencia", "incidir", "hacer incidencia politica"]
+    answer: >
+      Incidencia es influir de forma organizada y con evidencia en decisiones públicas
+      o institucionales: leyes, programas, presupuestos o prácticas. Combina datos,
+      propuestas concretas y diálogo con quienes deciden.
+    status: done
+    source: "Glosario CEIBA"
+
+  - id: mitigacion_adaptacion
+    category: conceptos
+    question: "¿Diferencia entre mitigación y adaptación?"
+    variants: ["mitigacion vs adaptacion", "que es mitigacion", "que es adaptacion"]
+    answer: >
+      **Mitigación** reduce las emisiones que causan el cambio climático (por ejemplo,
+      energía solar). **Adaptación** prepara a las comunidades para sus efectos (por
+      ejemplo, calles que no se inunden).
+    status: done
+    source: "Diagnóstico de entrada CEIBA, pregunta 3"

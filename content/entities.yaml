@@ -1,0 +1,89 @@
+# =============================================================================
+# content/entities.yaml · ENTIDADES (datos concretos dentro de un mensaje)
+# -----------------------------------------------------------------------------
+# Ejemplo: en "soy de campus Monterrey y quiero la Semana Tec"
+#   campus   = monterrey
+#   programa = semanatec
+# Cada entidad lista sus valores y los SINÓNIMOS con que la gente los escribe.
+# Agrega sinónimos libremente; el valor (lo que va antes de los dos puntos) no se cambia.
+# =============================================================================
+
+programa:
+  internacionales: ["eventos internacionales", "internacional", "cop", "sb", "bonn", "glf", "global leaders", "delegacion", "capacitacion cop"]
+  semanatec: ["semana tec", "semanatec", "semana i", "emergencia climatica"]
+  anual: ["programa anual", "anual", "iniciativas climaticas", "todo el año", "un año"]
+
+nivel:
+  basico: ["basico", "principiante", "empezando", "nuevo", "no se nada"]
+  intermedio: ["intermedio", "algo se", "conozco los conceptos"]
+  avanzado: ["avanzado", "experto", "ya tengo proyecto", "ya tengo iniciativa"]
+
+# Campus: DEBEN coincidir con los `id` de content/contacts.yaml.
+campus:
+  monterrey: ["monterrey", "mty", "campus monterrey"]
+  cdmx: ["ciudad de mexico", "cdmx", "santa fe", "campus ciudad de mexico", "ccm"]
+  guadalajara: ["guadalajara", "gdl"]
+  puebla: ["puebla"]
+  queretaro: ["queretaro", "qro"]
+  toluca: ["toluca"]
+  otro: ["otro campus", "otra escuela", "no soy del tec", "externo"]
+
+# ---------------------------------------------------------------------------
+# Reglas de DERIVACIÓN al secretario de campus (nivel 2 de atención).
+# Si un mensaje contiene alguna de estas frases, el bot NO responde por sí mismo:
+# identifica el campus y entrega el contacto del secretario correspondiente.
+# ---------------------------------------------------------------------------
+handoff_triggers:
+  propuesta_concreta:   # La pregunta es sobre la propuesta específica del estudiante
+    - "mi propuesta"
+    - "mi proyecto"
+    - "mi iniciativa"
+    - "nuestra propuesta"
+    - "nuestro proyecto"
+    - "revisar mi idea"
+    - "le das el visto bueno"
+    - "es viable mi"
+  espacio_campus:       # Menciona un espacio físico del campus
+    - "auditorio"
+    - "salon"
+    - "aula"
+    - "laboratorio"
+    - "explanada"
+    - "edificio"
+    - "biblioteca del campus"
+    - "reservar un espacio"
+    - "prestar un espacio"
+  persona_campus:       # Menciona a una persona o cargo del campus
+    - "profesor"
+    - "profesora"
+    - "maestro"
+    - "maestra"
+    - "director"
+    - "directora"
+    - "coordinador"
+    - "coordinadora"
+    - "mi asesor"
+    - "mi asesora"
+    - "decano"
+
+# ---------------------------------------------------------------------------
+# Expansión bilingüe para la biblioteca: casi todos los documentos oficiales están
+# en inglés o francés, y la gente pregunta en español. Antes de buscar, el bot
+# añade estos equivalentes. Agrega pares nuevos cuando notes búsquedas fallidas.
+# ---------------------------------------------------------------------------
+query_expansion:
+  "acuerdo de paris": ["paris agreement", "accord de paris"]
+  "protocolo de kioto": ["kyoto protocol"]
+  "cmnucc": ["unfccc", "convention", "ccnucc"]
+  "contribuciones determinadas": ["ndc", "nationally determined contributions"]
+  "balance mundial": ["global stocktake", "gst"]
+  "perdidas y danos": ["loss and damage"]
+  "financiamiento climatico": ["climate finance", "ncqg", "new collective quantified goal"]
+  "mitigacion": ["mitigation"]
+  "adaptacion": ["adaptation"]
+  "organos subsidiarios": ["subsidiary bodies", "sbsta", "sbi"]
+  "conferencia de las partes": ["cop", "conference of the parties"]
+  "informe de evaluacion": ["assessment report", "ar7"]
+  "ciudades": ["cities"]
+  "pais anfitrion": ["host country", "host"]
+  "observadores": ["observer", "non-party stakeholders"]

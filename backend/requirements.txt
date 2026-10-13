@@ -1,0 +1,14 @@
+# Dependencias mínimas del backend de CEIBA bot (Python 3.11+).
+# Instalar:  pip install -r backend/requirements.txt
+fastapi>=0.110,<1.0        # servidor web y webhooks
+uvicorn[standard]>=0.29    # servidor ASGI para correr FastAPI
+httpx>=0.27                # llamadas HTTP salientes (WhatsApp, Telegram, Messenger, LLM)
+pyyaml>=6.0                # lectura de los archivos de contenido (content/*.yaml)
+
+# --- Desarrollo y pruebas ---
+pytest>=8.0
+
+# --- Opcionales (descomenta solo si los activas en .env) ---
+# pypdf>=4.0                    # extraer texto de PDF en scripts/ingest_bibliography.py
+# sentence-transformers>=3.0    # RAG_RETRIEVER=embeddings (búsqueda semántica multilingüe)
+# numpy>=1.26                   # requerido por sentence-transformers
