@@ -1,127 +1,122 @@
-# 🌳 CEIBA bot
+# CEIBA · Sitio web (demo funcional)
 
-Asistente conversacional de **CEIBA · Capacitación e Incidencia en Bienestar Ambiental**. Informa sobre el programa, evalúa el perfil de cada persona con preguntas cortas, le recomienda programa y lecturas oficiales de la ONU y el IPCC, responde preguntas frecuentes con datos exactos y, cuando la duda requiere a una persona, la deriva a la secretaría de su campus.
+Sitio de **CEIBA · Capacitación e Incidencia en Bienestar Ambiental**, construido con **Web Components estándar + Lit 3.2.1**. No depende de React, Angular ni de un entorno local: cualquier servidor estático, CMS o app híbrida puede cargarlo.
 
-Funciona en **sitio web, WhatsApp, Telegram y Facebook Messenger** con una sola lógica. Tiene el mismo contenido que el sitio web de CEIBA.
+## 1. Ejecutar
 
----
+```bash
+# Opción A: versión modular (desarrollo). Requiere servidor HTTP (los módulos ES no cargan con file://)
+npx serve .            # abre http://localhost:3000
 
-## Empieza aquí según tu rol
+# Opción B: un solo archivo (producción rápida)
+node build.mjs         # genera dist/index.html (documento completo) y dist/artifact.html (fragmento)
+```
 
-| Si tú… | Lee primero | Editas en |
+Publica `dist/index.html` en GitHub Pages, Netlify, Vercel, S3 o dentro de un CMS. Nada requiere Node en producción.
+
+## 2. Arquitectura
+
+```
+index.html                 ← entrada modular (carga src/main.js)
+build.mjs                  ← empaqueta todo en un archivo, detecta nombres duplicados
+src/
+  styles/tokens.css        ← ÚNICA fuente de colores, fuentes y radios (tema claro/oscuro/alto contraste)
+  core/  lit.js · store.js · utils.js · icons.js · styles.js · base.js
+  data/  content.js        ← TODO el texto del sitio (editar aquí, no en los componentes)
+         diagnostics.js    ← motor de exámenes diagnósticos (datos + reglas de puntaje)
+         search-index.js   ← índice de la barra de búsqueda
+  components/  ui-button · ui-switch · ui-progress · ui-toast · ui-modal · ui-term · ui-qr · ui-search
+               ui-button.ts  (versión TypeScript con decoradores, equivalente)
+  layout/      ceiba-header · ceiba-sidebar · ceiba-footer
+  views/       inicio · nosotros · programas · diagnostico · iniciativas · indicadores · calendario · testimonios · participa
+  app.js       ← <ceiba-app>: layout, enrutador por hash, ventanas legales, aviso de almacenamiento
+```
+
+| Zona | Componente | Contenido |
 |---|---|---|
-| Cambias textos, preguntas frecuentes, contactos o lecturas | [docs/02_GUIA_DE_EDICION.md](docs/02_GUIA_DE_EDICION.md) | `content/` (solo archivos `.yaml`) |
-| Conectas WhatsApp, Telegram, Messenger, correo o Google Sheets | [docs/03_CONECTIVIDAD.md](docs/03_CONECTIVIDAD.md) | `.env` (nunca en el código) |
-| Modificas el comportamiento o agregas una función | [docs/01_ARQUITECTURA.md](docs/01_ARQUITECTURA.md) y [docs/04_FLUJOS_CONVERSACIONALES.md](docs/04_FLUJOS_CONVERSACIONALES.md) | `backend/app/` |
-| Publicas el bot en un servidor | [docs/07_DESPLIEGUE.md](docs/07_DESPLIEGUE.md) | `.env`, `Dockerfile` |
-| No conoces términos como «intención» o «webhook» | [docs/00_GLOSARIO_TECNICO.md](docs/00_GLOSARIO_TECNICO.md) | — |
+| Cabecera | `<ceiba-header>` | Logotipo, navegación, menú «Más» (dropdown), búsqueda, accesibilidad, CTA «Participa» |
+| Barra lateral | `<ceiba-sidebar>` | Recorrido con progreso, filtros (categoría = dropdown, nivel = radios), switches de accesibilidad, QR |
+| Cuerpo | `view-*` | 9 secciones; se conservan montadas para no perder lo escrito al navegar |
+| Pie | `<ceiba-footer>` | Mapa del sitio, legales, contacto, redes, © y créditos |
 
-Busca la etiqueta **`EDITA AQUÍ`** en cualquier archivo: marca cada dato que el equipo debe completar o personalizar.
+**Orden lógico de la experiencia:** Inicio (elige perfil → ruta sugerida) → Quiénes somos → Programas (3 pestañas) → Diagnóstico (3 exámenes) → Iniciativas (explorador + «mi idea») → Calendario → Indicadores → Testimonios → Participa (formulario que precarga nivel e idea).
 
-```bash
-grep -rn "EDITA AQUÍ" content/ .env.example     # lista todo lo pendiente
+## 3. Cambiar la paleta (Canva)
+
+Edita solo el bloque `:root` de `src/styles/tokens.css` (`--c-primary`, `--c-accent`, `--c-sky`, neutros). Todos los componentes heredan las variables a través del Shadow DOM. Después ajusta los bloques de tema oscuro con tonos más claros de los mismos colores y verifica contraste AA (4.5:1 para texto).
+
+## 4. Editar contenido
+
+Todo vive en `src/data/content.js`. Convenciones:
+
+- `simple`: versión en palabras sencillas (se muestra con «Modo sencillo»).
+- `status`: `done` (Realizado), `meta` (Meta), `prop` (Propuesta), `ex` (Ejemplo ilustrativo). Evita afirmaciones sin respaldo.
+- `null`: dato pendiente; el sitio muestra la etiqueta «Por definir».
+- `TESTIMONIALS`: solo se publican entradas con `verified: true`, `consentDate`, `source`, `name` y `quote`.
+
+Datos pendientes de llenar: `SITE.contact`, `SITE.social`, `SITE.privacyController`, `SITE.imageCredits`, `SITE.publicUrl`, `SITE.formEndpoint`, `ABOUT.team`, `COMPONENTS[1].link` (enlace Semana Tec).
+
+## 5. Agregar componentes (ejemplo real: código QR)
+
+`ui-qr` se agregó sin tocar el resto del sitio. El patrón:
+
+1. Crea `src/components/ui-mi-componente.js`:
+
+```js
+import { LitElement, html, css } from '../core/lit.js';
+export class UIMiComponente extends LitElement {
+  static properties = { valor: { type: String } };
+  static styles = css`:host { display: block; color: var(--c-ink); }`;   // usa tokens
+  constructor() { super(); this.valor = ''; }                              // NO uses campos de clase para propiedades reactivas
+  render() { return html`<p>${this.valor}</p>`; }
+}
+customElements.define('ui-mi-componente', UIMiComponente);
 ```
 
----
+2. Impórtalo en `src/main.js` (antes de `layout/` y `views/`).
+3. Úsalo como etiqueta HTML en cualquier vista: `<ui-mi-componente valor="Hola"></ui-mi-componente>`.
+4. Si carga una librería externa, hazlo bajo demanda (ver `loadLib()` en `ui-qr.js`) y regístrala en «Integraciones de terceros» (`app.js`).
 
-## Arranque rápido (5 minutos)
+QR en cualquier página externa, sin el resto del sitio:
 
-Requiere Python 3.11 o superior.
-
-```bash
-git clone <URL-del-repo> ceiba-bot && cd ceiba-bot
-pip install -r backend/requirements.txt
-cp .env.example .env                              # ya funciona en modo prueba sin llenar nada
-
-python scripts/chat_cli.py                        # opción 1: conversar en la terminal
-uvicorn app.main:app --reload --app-dir backend   # opción 2: abrir http://localhost:8000
+```html
+<script type="module" src="https://tu-dominio.mx/ceiba/components/ui-qr.js"></script>
+<ui-qr value="https://tu-dominio.mx/ceiba#participa" label="QR para inscribirte en CEIBA" size="200"></ui-qr>
 ```
 
-En la opción 2 verás la página de demostración con el widget. `http://localhost:8000/demo/?modo=pagina` muestra la versión de página completa y `http://localhost:8000/docs` la documentación de la API.
+**Agregar una sección nueva:** crea `src/views/view-x.js` extendiendo `CeibaView`, añádela a `NAV` (content.js), a `VIEWS` (store.js), a `VIEW_TAGS` y al `switch` de `app.js`, y a `main.js`.
 
-Antes de subir cualquier cambio:
+## 6. Conectar el formulario
 
-```bash
-python scripts/validate_content.py    # revisa los YAML (formato, límites de WhatsApp, campos obligatorios)
-python -m pytest -q backend/tests     # 73 pruebas automáticas
+Define `SITE.formEndpoint` con la URL de tu servicio (Google Apps Script, Formspree, Supabase Edge Function, API propia). El componente envía `POST` con JSON:
+
+```json
+{ "name": "", "email": "", "age": "", "role": "", "school": "", "semester": "", "interests": [], "level": "",
+  "message": "", "tutorName": "", "tutorEmail": "", "tutorConsent": false, "newsletter": false, "privacy": true,
+  "submittedAt": "ISO-8601", "source": "ceiba-web" }
 ```
 
----
+Requisitos del servidor: HTTPS, CORS limitado a tu dominio, validación del lado del servidor (no confíes en la del navegador), límite de peticiones y registro de la fecha de consentimiento. No guardes claves de API en el front-end.
 
-## Mapa del repositorio
+## 7. Consumo desde frameworks
 
-```
-ceiba-bot/
-├── content/                  ← CONTENIDO EDITABLE (sin programar). Cada archivo explica su formato arriba.
-│   ├── bot.yaml              nombre, tono, saludos y mensajes del sistema
-│   ├── menus.yaml            botones del menú de acciones y temas de la biblioteca
-│   ├── intents.yaml          INTENCIONES: palabras y frases que el bot reconoce
-│   ├── entities.yaml         ENTIDADES (campus, programa, nivel), reglas de derivación, traducciones de búsqueda
-│   ├── faq.yaml              banco de preguntas frecuentes (nivel 1): monto, fechas, rubros, formulario…
-│   ├── contacts.yaml         contactos de CEIBA y de la secretaría de cada campus  ← EDITA AQUÍ
-│   ├── programs.yaml         quiénes somos y los tres programas (igual que el sitio)
-│   ├── diagnostic.yaml       evaluación de perfil progresiva (preguntas, mini retos, reglas de nivel)
-│   ├── initiatives.yaml      tipos de iniciativa (3 sectores × 3 tipos)
-│   ├── calendar.yaml         calendario agosto → julio
-│   ├── glossary.yaml         glosario («¿qué es la CMNUCC?»)
-│   └── bibliography.yaml     biblioteca UNFCCC/IPCC: la única fuente de verdad de las respuestas climáticas
-│
-├── backend/                  ← SERVIDOR (Python + FastAPI)
-│   ├── app/
-│   │   ├── main.py           rutas: API web, webhooks de cada canal, administración
-│   │   ├── orchestrator.py   MIDDLEWARE: recibe → entiende → decide → responde → guarda
-│   │   ├── config.py         lee .env
-│   │   ├── content_loader.py carga content/*.yaml
-│   │   ├── models.py         formato neutral de mensajes (texto, botones, tarjetas)
-│   │   ├── security.py       firmas de webhooks, límite anti-spam, hash de identificadores
-│   │   ├── nlu/              comprensión: normalizador, clasificador de intenciones, extractor de entidades
-│   │   ├── dialogue/         contexto por persona, estados y árbol de decisión
-│   │   ├── fulfillment/      una función por intención (handlers, perfil, derivación, recomendador)
-│   │   ├── rag/              biblioteca: búsqueda (BM25 o embeddings), redacción con fuentes, ingesta
-│   │   ├── channels/         adaptadores: web, WhatsApp, Telegram, Messenger
-│   │   ├── integrations/     avisos salientes: correo, webhook (Sheets/CRM), Slack
-│   │   └── storage/          base de datos SQLite
-│   ├── tests/                pruebas automáticas (comprensión, flujos, canales, biblioteca, contenido)
-│   └── requirements.txt
-│
-├── frontend/
-│   ├── widget/ceiba-bot.js   widget <ceiba-bot> (Web Component, sin dependencias, adaptable)
-│   └── demo/index.html       página de prueba
-│
-├── scripts/                  herramientas: validar contenido, chat en terminal, ingesta, limpieza, Telegram
-├── docs/                     documentación por tema (ver tabla de arriba)
-├── data/                     base de datos e índice (se genera solo; no se sube a GitHub)
-├── .env.example              plantilla de configuración con explicación de cada variable
-├── Dockerfile · docker-compose.yml · Makefile
-└── .github/                  revisión automática (CI), dueños por carpeta, plantillas de PR e issues
+```jsx
+// React 19+: soporta Custom Elements de forma nativa (propiedades y eventos).
+// React 18: pasa strings como atributos y escucha eventos personalizados con ref + addEventListener.
+import './ceiba/components/ui-button.js';   // ruta del bundle, NO una URL remota en un import de bundler
+export const Cta = () => <ui-button variant="primary" onui-click={(e) => console.log(e.detail)}>Descargar</ui-button>;
 ```
 
----
+Vue: `app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith('ui-') || tag.startsWith('ceiba-')`.
 
-## Qué hace el bot
+## 8. Accesibilidad y privacidad incluidas
 
-| Opción del menú | Qué ocurre | Contenido en |
-|---|---|---|
-| 📝 Evaluar mi perfil | 6 preguntas, una a la vez, con 2 mini retos y retroalimentación. Asigna perfil, nivel y programa, y recomienda lecturas | `diagnostic.yaml`, `bibliography.yaml` |
-| 🌎 Programas | Los tres programas con público, logros y lecturas útiles | `programs.yaml` |
-| 📚 Biblioteca climática | Lecturas por tema y preguntas libres respondidas solo con fuentes oficiales | `bibliography.yaml` |
-| 💡 Tipos de iniciativa | Sectores público, privado y mixto con ejemplos | `initiatives.yaml` |
-| 📅 Calendario | Mes actual marcado y próximos eventos | `calendar.yaml` |
-| ❓ Preguntas frecuentes | Respuestas predeterminadas exactas, con fuente | `faq.yaml` |
-| 📊 Mi progreso | Perfil, nivel, lecturas y código para continuar en otro dispositivo | (base de datos) |
-| ✍️ Inscribirme | Enlace al formulario oficial (el bot no pide datos personales) | `contacts.yaml` |
-| 🤝 Hablar con una persona | Niveles de atención y contacto de la secretaría del campus | `contacts.yaml` |
+Enlace «Saltar al contenido», navegación con teclado (pestañas con flechas, búsqueda con `/`), foco visible, `aria-live` en notificaciones, etiquetas visibles, errores con resumen enlazado, tamaño de letra 90–150 %, alto contraste, reducir movimiento, tema oscuro, modo sencillo y lectura en voz alta. Aviso de almacenamiento previo a guardar nada, consentimiento explícito en el formulario, consentimiento de tutor para menores y finalidad secundaria (boletín) separada. Los textos legales son **borradores**: requieren revisión jurídica.
 
-**Regla de derivación:** si la pregunta menciona la propuesta concreta del estudiante, un espacio del campus o una persona del campus, el bot no responde por su cuenta. Identifica el campus (o lo pregunta) y entrega el contacto de su secretaría. Si la persona lo autoriza, avisa a la secretaría por correo, webhook o Slack.
+## 9. Pendientes detectados en el contenido fuente
 
----
-
-## Estado y pendientes
-
-Datos que el equipo debe completar antes de publicar (el validador los lista como avisos): contactos de CEIBA y de cada secretaría, URL del aviso de privacidad, monto, fechas, rubros no financiables, definición de «empujón verde» y costo del programa. Mientras estén en `null`, el bot dice que el dato no está publicado y ofrece el contacto humano; nunca lo inventa.
-
----
-
-## Licencia
-
-Por definir por la coordinación de CEIBA. Los documentos de la biblioteca pertenecen a sus autores (UNFCCC, IPCC); el bot solo enlaza a ellos y cita datos breves.
+1. Semana Tec: el texto dice «seis equipos», pero lista cinco sectores.
+2. «Intervenciones urbanas / política pública» repetía la definición de iniciativas público-privadas; se usó un texto derivado de la definición del sector público, marcado «Texto por validar».
+3. «Infraestructura y servicios públicos sostenibles» terminaba en coma («…el sector privado lo financia,»); se cerró la frase y se marcó por validar.
+4. Hay dos calendarios en la fuente (julio–junio y agosto–julio); se usó el «Calendario anual completo» (agosto–julio).
+5. La paleta es provisional: el enlace de Canva no permite lectura automática.
