@@ -1,1 +1,0 @@
-"""Persistencia: ver db.py."""
