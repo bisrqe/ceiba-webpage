@@ -1,7 +1,15 @@
 import './core/lit.js';
+import './core/store.js';
+import './core/styles.js';
+import './core/icons.js';
+import './core/utils.js';
+import './core/base.js';
+import './data/content.js';
+import './data/diagnostics.js';
+import './data/search-index.js';
+import './layout/ceiba-footer.js';
 import './layout/ceiba-header.js';
 import './layout/ceiba-sidebar.js';
-import './layout/ceiba-footer.js';
 import './components/ui-button.js';
 import './components/ui-modal.js';
 import './components/ui-progress.js';
