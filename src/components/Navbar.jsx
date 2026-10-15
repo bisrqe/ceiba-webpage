@@ -5,6 +5,7 @@ const links = [
   { to: "/founders", label: "Conócenos" },
   { to: "/iniciativas", label: "Iniciativas" },
   { to: "/blog", label: "Blog" },
+  { to: "/plataforma", label: "Plataforma" },
 ];
 
 export default function Navbar() {

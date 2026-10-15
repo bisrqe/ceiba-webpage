@@ -6,6 +6,7 @@ import Founders from "./pages/Founders";
 import Initiatives from "./pages/Initiatives";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import Plataforma from "./pages/Plataforma";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/iniciativas" element={<Initiatives />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/plataforma" element={<Plataforma />} />
         </Routes>
       </main>
       <Footer />
