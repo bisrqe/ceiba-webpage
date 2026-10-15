@@ -1,0 +1,92 @@
+# =============================================================================
+# content/diagnostic.yaml · EVALUACIÓN DE PERFIL (progresiva y gamificada)
+# -----------------------------------------------------------------------------
+# El bot hace UNA pregunta a la vez, con botones. Tras cada respuesta muestra una
+# retroalimentación corta y pasa a la siguiente. Al final asigna:
+#   perfil (aprender | estudiante | aliado), interés (programa), nivel y campus.
+#
+# Es la versión corta (5 preguntas + campus opcional) del diagnóstico de 6 preguntas del
+# sitio web. El sitio sigue siendo la referencia oficial del nivel.
+#
+# Cada opción:
+#   value → valor interno (no lo cambies si ya hay datos guardados).
+#   short → texto del botón: MÁXIMO 24 caracteres (límite de WhatsApp en listas).
+#   text  → texto completo (web, Telegram y descripción en WhatsApp, máx. 72 car.).
+# `correct` marca la respuesta correcta en preguntas de conocimiento (trivia).
+# El ORDEN de las preguntas es el orden de esta lista.
+# =============================================================================
+
+intro: >
+  Son **6 preguntas rápidas** (menos de 2 minutos; la última es opcional). No es un examen: sirve para
+  recomendarte un programa y lecturas a tu medida. 🌱
+
+questions:
+  - id: perfil
+    kind: profile
+    prompt: "¿Cuál se parece más a ti?"
+    options:
+      - { value: aprender,   short: "Quiero aprender",     text: "Quiero aprender lo básico (8 a 14 años o primera vez en el tema)" }
+      - { value: estudiante, short: "Soy universitario/a", text: "Soy estudiante universitario/a" }
+      - { value: aliado,     short: "Docente o aliado",    text: "Soy docente, familia o aliado/a de CEIBA" }
+
+  - id: interes
+    kind: interest
+    prompt: "¿Qué te llama más la atención?"
+    options:
+      - { value: internacionales, short: "Negociaciones ONU",   text: "Las negociaciones internacionales (COP, Bonn, diplomacia climática)" }
+      - { value: semanatec,       short: "Retos en equipo",     text: "Resolver un problema real en equipo durante una semana" }
+      - { value: anual,           short: "Crear mi iniciativa", text: "Diseñar e implementar mi propia iniciativa durante un año" }
+      - { value: no_se,           short: "Aún no sé",           text: "Todavía no lo sé, quiero explorar" }
+
+  - id: t1
+    kind: trivia
+    prompt: "🎯 Mini reto 1 de 2: ¿qué es la CMNUCC?"
+    options:
+      - { value: a, short: "Tratado de la ONU",    text: "El tratado de la ONU donde los países negocian sobre el clima" }
+      - { value: b, short: "Una ONG mexicana",     text: "Una organización civil mexicana" }
+      - { value: c, short: "Un programa de becas", text: "Un programa de becas universitarias" }
+      - { value: x, short: "Aún no lo sé",         text: "Aún no lo sé" }
+    correct: a
+    feedback_ok: "✅ ¡Exacto! La CMNUCC organiza cada año la COP y, a mitad de año, las sesiones SB en Bonn."
+    feedback_ko: "💡 Es el tratado de la ONU (UNFCCC en inglés) donde casi todos los países negocian cómo enfrentar el cambio climático. Organiza la COP cada año."
+
+  - id: t2
+    kind: trivia
+    prompt: "🎯 Mini reto 2 de 2: ¿mitigación y adaptación son lo mismo?"
+    options:
+      - { value: a, short: "Sí, son sinónimos",    text: "Sí, son sinónimos" }
+      - { value: c, short: "No: reducir vs. preparar", text: "No: mitigar reduce emisiones; adaptar prepara para los efectos" }
+      - { value: b, short: "Ciudad vs. campo",     text: "Mitigación es para ciudades y adaptación para el campo" }
+      - { value: x, short: "Aún no lo sé",         text: "Aún no lo sé" }
+    correct: c
+    feedback_ok: "✅ ¡Muy bien! Paneles solares = mitigación. Calles que no se inundan = adaptación."
+    feedback_ko: "💡 Mitigar es reducir las emisiones (energía solar); adaptar es prepararse para los efectos (calles que no se inunden)."
+
+  - id: etapa
+    kind: stage
+    prompt: "¿En qué punto está tu idea o iniciativa?"
+    options:
+      - { value: none,   short: "Aún no tengo idea",  text: "Aún no tengo una idea" }
+      - { value: idea,   short: "Tengo una idea",     text: "Tengo una idea, pero todavía sin estructura" }
+      - { value: design, short: "En diseño",          text: "Mi iniciativa está en fase de diseño" }
+      - { value: impl,   short: "Ya se implementa",   text: "Mi iniciativa ya se está implementando" }
+
+  - id: campus
+    kind: campus
+    optional: true
+    prompt: "Última: ¿en qué campus estudias? (así te paso el contacto correcto si lo necesitas)"
+    # Las opciones salen automáticamente de content/contacts.yaml → campuses.
+    skip_label: "Prefiero no decir"
+
+# Regla para asignar nivel (igual criterio que el sitio, adaptado a 2 retos):
+#   avanzado   → etapa = design o impl
+#   intermedio → acierta los 2 retos
+#   basico     → cualquier otro caso
+scoring:
+  advanced_stages: ["design", "impl"]
+  intermediate_min_correct: 2
+
+# Mensaje final. Variables: {nivel}, {programa}, {aciertos}
+result: >
+  🎉 ¡Listo! Tu nivel sugerido es **{nivel}** y el programa que más va contigo es
+  **{programa}**. Acertaste {aciertos} de 2 mini retos.

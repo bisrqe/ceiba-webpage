@@ -1,0 +1,92 @@
+# =============================================================================
+# content/menus.yaml · Menú de acciones (botones que ve la persona usuaria)
+# -----------------------------------------------------------------------------
+# Cada botón tiene:
+#   id     → identificador único, sin espacios ni acentos. NO lo cambies si ya existe.
+#   label  → texto del botón en la web y Telegram (puede llevar emoji).
+#   short  → texto corto para WhatsApp/Messenger (MÁXIMO 20 caracteres, lo exige Meta).
+#   intent → la intención que dispara (debe existir en content/intents.yaml).
+#   desc   → descripción opcional (WhatsApp la muestra en menús de lista, máx. 72 car.).
+#
+# AGREGAR UN BOTÓN: copia un bloque completo, cambia id/label/short/intent y guarda.
+# QUITAR UN BOTÓN: borra su bloque completo (desde el guion hasta antes del siguiente).
+# ORDEN: los botones aparecen en el mismo orden que aquí.
+# Ejecuta `python scripts/validate_content.py` antes de subir cambios.
+# =============================================================================
+
+main:
+  - id: perfil
+    label: "📝 Evaluar mi perfil"
+    short: "Evaluar mi perfil"
+    intent: evaluar_perfil
+    desc: "6 preguntas rápidas para recomendarte programa y lecturas"
+  - id: programas
+    label: "🌎 Programas"
+    short: "Programas"
+    intent: ver_programas
+    desc: "Eventos internacionales, Semana Tec y Programa Anual"
+  - id: biblioteca
+    label: "📚 Biblioteca climática"
+    short: "Biblioteca"
+    intent: biblioteca
+    desc: "Tratados y reportes oficiales de la ONU y el IPCC"
+  - id: iniciativas
+    label: "💡 Tipos de iniciativa"
+    short: "Iniciativas"
+    intent: ver_iniciativas
+    desc: "Público, privado y público-privado"
+  - id: calendario
+    label: "📅 Calendario"
+    short: "Calendario"
+    intent: ver_calendario
+    desc: "Fechas del ciclo agosto a julio"
+  - id: faq
+    label: "❓ Preguntas frecuentes"
+    short: "Preguntas frecuentes"
+    intent: faq_menu
+    desc: "Convocatoria, montos, fechas y formulario"
+  - id: progreso
+    label: "📊 Mi progreso"
+    short: "Mi progreso"
+    intent: mi_progreso
+    desc: "Tu perfil, nivel y lecturas pendientes"
+  - id: inscribirme
+    label: "✍️ Inscribirme"
+    short: "Inscribirme"
+    intent: inscripcion
+    desc: "Te llevo al formulario oficial"
+  - id: humano
+    label: "🤝 Hablar con una persona"
+    short: "Hablar con alguien"
+    intent: contacto_humano
+    desc: "Secretaría de tu campus o equipo CEIBA"
+
+# Submenú de la biblioteca (temas). `topic` debe coincidir con `tags` en bibliography.yaml.
+library_topics:
+  - id: lib_basicos
+    label: "🌱 Lo básico: ¿qué es la CMNUCC?"
+    short: "Lo básico"
+    topic: fundamentos
+  - id: lib_acuerdos
+    label: "📜 Tratados: Kioto y París"
+    short: "Tratados"
+    topic: tratados
+  - id: lib_cops
+    label: "🏛️ COPs y sesiones SB"
+    short: "COPs y SB"
+    topic: conferencias
+  - id: lib_ciencia
+    label: "📊 Ciencia del clima (IPCC)"
+    short: "Ciencia IPCC"
+    topic: ciencia
+  - id: lib_pregunta
+    label: "🔎 Hacer una pregunta libre"
+    short: "Pregunta libre"
+    topic: libre
+
+# Botones que acompañan casi todas las respuestas (navegación).
+footer:
+  - id: menu
+    label: "🏠 Menú"
+    short: "Menú"
+    intent: menu

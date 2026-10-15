@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CEIBA · Capacitación e Incidencia en Bienestar Ambiental</title>
+  <meta name="description" content="CEIBA forma a estudiantes para incidir en sostenibilidad y cambio climático: capacitaciones para eventos internacionales, Semana Tec y Programa Anual de Iniciativas Climáticas." />
+  <meta name="theme-color" content="#1E6B4F" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" />
+  <link rel="stylesheet" href="./src/styles/tokens.css" />
+  <!-- Web Components (Lit). Funciona en cualquier servidor estático: GitHub Pages, Netlify, Vercel, S3, CMS. -->
+  <script type="module" src="./src/main.js"></script>
+</head>
+<body>
+  <ceiba-app>
+    <!-- Contenido visible mientras cargan los componentes (y si JavaScript está desactivado) -->
+    <div class="boot" id="boot" role="status">
+      <div>
+        <strong>CEIBA</strong>
+        <span id="boot-msg">Cargando el sitio…</span>
+        <div class="bar" aria-hidden="true"><i></i></div>
+        <noscript><p>Este sitio necesita JavaScript para funcionar. Actívalo en tu navegador.</p></noscript>
+      </div>
+    </div>
+  </ceiba-app>
+  <script>
+    // Si los componentes no cargan en 12 s (sin conexión o CDN bloqueado), explica qué hacer.
+    setTimeout(function () {
+      if (!customElements.get('ceiba-app')) {
+        var m = document.getElementById('boot-msg');
+        if (m) m.textContent = 'No pudimos cargar el sitio. Revisa tu conexión a internet y recarga la página.';
+      }
+    }, 12000);
+  </script>
+</body>
+</html>
