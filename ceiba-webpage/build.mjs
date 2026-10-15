@@ -4,11 +4,12 @@
 // Uso: node build.mjs
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = dirname(new URL(import.meta.url).pathname);
+const ROOT = dirname(fileURLToPath(import.meta.url));
 const LIT = "import { LitElement, html, css, svg, nothing } from 'https://cdn.jsdelivr.net/npm/lit@3.2.1/+esm';";
 
-const main = readFileSync(join(ROOT, 'src/main.js'), 'utf8');
+const main = readFileSync(join(ROOT, 'src', 'main.js'), 'utf8');
 const files = [...main.matchAll(/^import '\.\/(.+?)';$/gm)].map((m) => m[1]).filter((f) => f !== 'core/lit.js');
 
 const seen = new Map();

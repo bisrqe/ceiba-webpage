@@ -1,0 +1,56 @@
+/* tokens.css · PROVISIONAL — valores de marca a confirmar.
+   Reconstruido para destrabar el build: este archivo no existía en el repo
+   (se perdió en el commit "Add files via upload"). Ajustar colores/tipografías
+   reales de CEIBA antes de publicar. */
+
+:root {
+  /* Tipografía */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+
+  /* Paleta — verde institucional CEIBA (#1E6B4F) + acentos */
+  --c-primary: #1E6B4F;
+  --c-primary-strong: #154d39;
+  --c-primary-soft: #e3efe9;
+
+  --c-accent: #E8A63C;
+  --c-accent-ink: #5a3d0b;
+  --c-accent-soft: #fbead0;
+
+  --c-leaf: #3f9168;
+  --c-trunk: #6b4a2f;
+
+  --c-sky: #2a6f9e;
+  --c-sky-soft: #e2eef5;
+
+  --c-ok: #1E6B4F;
+  --c-ok-soft: #e3efe9;
+  --c-warn: #8a6d1a;
+  --c-warn-soft: #faf0d2;
+  --c-bad: #a33a3a;
+  --c-bad-soft: #f6e3e3;
+
+  --c-ink: #16211c;
+  --c-muted: #5b6b63;
+  --c-bg: #f7f9f7;
+  --c-surface: #ffffff;
+  --c-surface-2: #eef3f0;
+  --c-line: #dbe4df;
+  --c-focus: #2a6f9e;
+
+  /* Layout */
+  --maxw: 1180px;
+  --header-h: 64px;
+  --gap: 1rem;
+  --min: 250px;
+
+  /* Forma / sombra / movimiento */
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 20px;
+  --shadow-2: 0 10px 30px -12px rgb(0 0 0 / .22);
+  --dur: 160ms;
+  --dur-slow: 600ms;
+
+  --qr-size: 180px;
+}
